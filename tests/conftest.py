@@ -11,6 +11,9 @@ def testing_client(scope='module'):
     db.session.commit()
 
     with app.test_client() as testing_client:
+        ctx = app.app_context()
+        ctx.push()
         yield testing_client
 
     db.drop_all()
+    ctx.pop()
